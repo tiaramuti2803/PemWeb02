@@ -1,9 +1,18 @@
-<?php
+<?php 
 require_once '../dbkoneksi.php';
+$_iddel = $_GET['iddel'];
 
-//menangkap data dari URL
-$id = $_GET['iddel'];
+// Delete related records in pesanan_items table
+$sql_delete = "DELETE FROM pesanan_items WHERE produk_id = ?";
+$st_delete = $dbh->prepare($sql_delete);
+$st_delete->execute([$_iddel]);
 
-$dbh->query("DELETE FROM kartu WHERE id=$id");
+// Delete row from produk table
+$sql_delete = "DELETE FROM produk WHERE id = ?";
+$st_delete = $dbh->prepare($sql_delete);
+$st_delete->execute([$_iddel]);
 
-header('location:index.php');
+// Redirect to product list page
+header('location:list.php');
+
+?>
